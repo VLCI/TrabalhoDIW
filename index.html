@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="PT-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"
+        integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g="
+        crossorigin="anonymous"></script>
+    <title>E-commerce</title>
+</head>
+<body>
+    <header>
+        
+        <div class="logo"></div>
+
+        <input id="pesquisa" type="text" name="pesquisa" placeholder="Pesquisar produtos" onkeyup="pesquisar()">
+        <button id="menu-toggle-btn" class="menu-toggle-btn" onclick="toggleMenu()">Menu</button>
+        <ul class="menu">
+            <li><a href="#">Sobre</a></li>
+            <li><a href="#">Produtos</a></li>
+            <li><a href="#">Contato</a></li>
+            <li><a href="#">Help</a></li>
+        </ul>
+       
+
+    </header>
+
+    <section>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-3 bg-light">
+                    <!-- Adicione o conteúdo da barra lateral aqui -->
+                </div>
+                <div class="col-md-9">
+                    <main class="container mt-4">
+                        <div id="product-list" class="row"></div>
+                    </main>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-dark text-white text-center py-3 mt-4">
+        <h1>Aluno:Lucas Eduardo Cancio Salvo</h1>
+        <p>Turno:Noite Curso: Analise e Desenvolvimento de Software Matricula:821120</p>
+    </footer>
+
+    <!-- CHAMADA DO JAVASCRIPT -->
+    <script src="java.js"></script>
+    <!-- CHAMADA DA API -->
+    <script>
+        function fetchProductList() {
+            fetch('https://diwserver.vps.webdock.cloud/products/category/Footwear - Shoes')
+                .then(res => res.json())
+                .then(data => {
+                    console.log('Imprimindo produtos');
+                    let str = '';
+                    for (let i = 0; i < 9; i++) {
+                        let product = data.products[i];
+                        str += `
+                            <div class="col-md-6 col-lg-4 mb-4">
+                                <div class="card">
+                                    <img src="${product.image}" class="card-img-top" alt="Product Image">
+                                    <div class="card-body">
+                                        <h5 class="card-title">${product.title}</h5>
+                                        <p class="card-text">Release Date: ${product.releaseDate}</p>
+                                        <p class="card-text">Rating: ${product.rating}</p>
+                                        <a href="descricao.html?id=${product.id}" target="_blank" class="btn btn-primary">Mais detalhes</a>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    }
+                    document.getElementById('product-list').innerHTML = str;
+                });
+
+            console.log('Terminou');
+        }
+
+        fetchProductList();
+
+        function toggleMenu() {
+            $('.menu').toggleClass('active');
+        }
+
+        $(document).ready(function() {
+            $(window).resize(function() {
+                if ($(window).width() > 768) { // Adjust the width as per your needs
+                    $('.menu').removeClass('active');
+                }
+            });
+        });
+    </script>
+    <!-- FIM DA API -->
+</body>
+</html>
